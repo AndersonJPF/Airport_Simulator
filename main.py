@@ -42,59 +42,15 @@ SLEEP_TIME = 2
 show_image = False
 NUMBER_OF_ROUNDS = 4
 
-for round_of_execution in range(NUMBER_OF_ROUNDS):
-  N_SPACES = 5
+while True:
+  for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
 
-  final_output_json[f'ROUND {round_of_execution}'] = {}
-  dict_floor_queues = create_airplanes_floor(dict_floor_queues=dict_floor_queues, dict_available_spaces=dict_available_spaces)
-  open_image(dict_name=all_dicts_names[0], dictionary=dict_floor_queues, list_imgs=queues_imgs, show_image=show_image)
-  output_generator(final_output_json=final_output_json, key='CURRENT TIME', dict_name=all_dicts_names[0], dictionary=dict_floor_queues, all_df=all_df)
-  sleep(SLEEP_TIME)
-  #output.clear()
 
-  dict_runways = enter_runway(dict_runways=dict_runways, dict_floor_queues=dict_floor_queues,\
-                              dict_runway_to_queue=dict_runway_to_queue, dict_available_spaces=dict_available_spaces)
-  open_image(dict_name=all_dicts_names[1], dictionary=dict_runways, list_imgs=runways_imgs, show_image=show_image)
-  output_generator(final_output_json=final_output_json, key='CURRENT TIME', dict_name=all_dicts_names[1], dictionary=dict_runways, all_df=all_df)
-  sleep(SLEEP_TIME)
-  #output.clear()
-  
-
-  dict_airplanes_to_take_off = takeoff(dict_runways=dict_runways, dict_runway_to_queue=dict_runway_to_queue)
-  open_image(dict_name=all_dicts_names[2], dictionary=dict_airplanes_to_take_off, list_imgs=taking_off_imgs,show_image=show_image)
-  output_generator(final_output_json=final_output_json, key=f'ROUND {round_of_execution}', dict_name=all_dicts_names[2], dictionary=dict_airplanes_to_take_off, all_df=all_df)
-  sleep(SLEEP_TIME)
-  #output.clear()
-
-  dict_sky_queues = create_airplanes_sky(dict_sky_queues=dict_sky_queues, dict_available_spaces=dict_available_spaces)
-  open_image(dict_name=all_dicts_names[3], dictionary=dict_sky_queues, list_imgs=queues_imgs, show_image=show_image)
-  output_generator(final_output_json=final_output_json, key='CURRENT TIME', dict_name=all_dicts_names[3], dictionary=dict_sky_queues, all_df=all_df)
-  sleep(SLEEP_TIME)
-  #output.clear()
-
-  dict_crashed_airplanes, dict_airplanes_emergency_landings, dict_airplanes_normal_landings =landing(dict_sky_queues=dict_sky_queues, dict_runways=dict_runways,\
-                                 dict_runway_to_queue=dict_runway_to_queue, dict_queue_to_runway=dict_queue_to_runway,\
-                                 emergency_landings=emergency_landings, airplane_crash=airplane_crash)
-  
-  final_output_json['CURRENT TIME']['CRASHED AIRPLANES'] = dict_crashed_airplanes
-
-  open_image(dict_name=all_dicts_names[4], dictionary=dict_crashed_airplanes, list_imgs=crashed_airplanes_imgs, show_image=show_image)
-  output_generator(final_output_json=final_output_json, key=f'ROUND {round_of_execution}', dict_name=all_dicts_names[4], dictionary=dict_crashed_airplanes, all_df=all_df)
-  sleep(SLEEP_TIME)
-  #output.clear() 
-   
-
-  open_image(dict_name=all_dicts_names[5], dictionary=dict_airplanes_emergency_landings, list_imgs=emergency_landings_imgs, show_image=show_image)
-  output_generator(final_output_json=final_output_json, key=f'ROUND {round_of_execution}', dict_name=all_dicts_names[5], dictionary=dict_airplanes_emergency_landings, all_df=all_df)
-  sleep(SLEEP_TIME)
-  #output.clear() 
-  
-  open_image(dict_name=all_dicts_names[6], dictionary=dict_airplanes_normal_landings, list_imgs=landings_imgs, show_image=show_image)
-  output_generator(final_output_json=final_output_json, key=f'ROUND {round_of_execution}', dict_name=all_dicts_names[6], dictionary=dict_airplanes_normal_landings, all_df=all_df)
-  sleep(SLEEP_TIME)
-  #output.clear() 
-  
-  #sleep(5)
+  screen.fill((0, 0, 0))
+  #pygame.draw.rect(screen, (152,152,152), pygame.Rect(30, 30, 60, 60), 2)
+  pygame.display.flip()
 
 #saving DataFrame on .xlsx
 final_df = pd.concat(all_df)

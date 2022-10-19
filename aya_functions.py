@@ -1,7 +1,12 @@
 from random import randint, choice
 import pandas as pd
-from skimage.io import imshow, imread
 import matplotlib.pyplot as plt
+import pygame
+from pygame.locals import *
+
+pygame.init()
+screen = pygame.display.set_mode((1000,600))
+pygame.display.set_caption('AYA Airport')
 
 def create_airplanes_floor(dict_floor_queues, dict_available_spaces): #creating airplanes to floor queues
   '''
@@ -97,7 +102,6 @@ def takeoff(dict_runways, dict_runway_to_queue):
           dict_runways[runway].pop(airplane)
     return dict_airplanes_to_take_off
         
-
 def create_airplanes_sky(dict_sky_queues, dict_available_spaces):
     '''
     Once the airplane is already on the queue and new airplanes are added, it means
@@ -132,7 +136,6 @@ def create_airplanes_sky(dict_sky_queues, dict_available_spaces):
           dict_sky_queues[queue][ID] = dict_airplane
     return dict_sky_queues
         
-
 def landing(dict_runways, dict_sky_queues, dict_runway_to_queue, dict_queue_to_runway, emergency_landings, airplane_crash):
     dict_airplanes_normal_landings = {'runway_1':{}, 'runway_2':{}, 'runway_3':{}}
     dict_airplanes_on_emergency_landings = {'runway_1':{}, 'runway_2':{}, 'runway_3':{}}
@@ -189,7 +192,6 @@ def landing(dict_runways, dict_sky_queues, dict_runway_to_queue, dict_queue_to_r
             dict_sky_queues[queue].pop(airplane)
         
     return dict_crashed_airplanes, dict_airplanes_on_emergency_landings, dict_airplanes_normal_landings
-
 
 def format_line_name(line_name:str):
   #formatting the line name (runways and queues)
@@ -253,43 +255,6 @@ def output_generator(final_output_json, key, dict_name, dictionary, all_df, roun
   all_df.append(df)
   final_output_json[key][dict_name] = dictionary
 
-def save_imgs(list_imgs, number_of_imgs, names_imgs):
-  for i in range(number_of_imgs):
-    img = imread(f'{names_imgs}_{i}.png')
-    list_imgs.append(img)
-
-runways_imgs =[]
-queues_imgs =[]
-taking_off_imgs = []
-crashed_airplanes_imgs = []
-emergency_landings_imgs = []
-landings_imgs = []
-
-save_imgs(runways_imgs, 4, 'runway')
-save_imgs(queues_imgs, 4, 'queue')
-save_imgs(taking_off_imgs, 2, 'taking_off')
-save_imgs(crashed_airplanes_imgs, 2, 'crashed_airplane')
-save_imgs(emergency_landings_imgs, 2, 'emergency_landing')
-save_imgs(landings_imgs, 2, 'landing')
-
-def open_image(dict_name, dictionary, list_imgs, show_image):
-  if (show_image == True):
-    name_to_display = {'FLOOR QUEUES':' FLOOR QUEUE', 'RUNWAYS': 'RUNWAY', 'TAKING OFF':'TAKING OFF', 'SKY QUEUES':'SKY QUEUE',\
-                      'CRASHED AIRPLANES':'CRASHED AIRPLANE', 'EMERGENCY LANDINGS':'EMERGENCY LANDING', 'LANDINGS':'LANDING'}
-
-    spaces = 10-len(name_to_display[dict_name])
-
-    plt.figure(figsize=(4.5, 4.5))
-    i = 0
-    for line in dictionary: 
-      number_of_airplanes = len(dictionary[line])
-      img = list_imgs[number_of_airplanes]
-      plt.subplot(3, 3, i+1)
-      plt.imshow(img)
-      plt.axis('off')
-      i += 1
-
-      plt.tight_layout()
-    return plt.show()
-    
-
+def draw_slots(dict_floor_queues):
+  for i in range(len(dict_floor_queues)):
+    pass
